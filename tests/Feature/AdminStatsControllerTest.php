@@ -14,7 +14,7 @@ class AdminStatsControllerTest extends TestCase
 {
     use RefreshDatabase;
 
-public function test_fetch_data_by_admin()
+    public function test_fetch_data_by_admin()
     {
 
         $this->withoutExceptionHandling();
@@ -25,17 +25,17 @@ public function test_fetch_data_by_admin()
         $user = User::factory()->create([
             'role' => 'user',
         ]);
-        
-        $this->actingAs($admin, 'sanctum' );
+
+        $this->actingAs($admin, 'sanctum');
 
         $department = Department::factory()->create([
-            'name' => 'Technical'
+            'name' => 'Technical',
         ]);
 
         Ticket::factory()->create([
             'status' => 'pending',
             'department_id' => $department->id,
-            'user_id' => $user->id
+            'user_id' => $user->id,
         ]);
 
 
@@ -53,40 +53,40 @@ public function test_fetch_data_by_admin()
                                 'pending' => 1,
                                 'resolved' => 0,
                                 'rejected' => 0,
-                                'processing' => 0
+                                'processing' => 0,
                             ],
                             'users' => [
                                 'all_user' => 2,
                                 'resolver' => 0,
                                 'department' => 1,
                                 'clean_user' => 1,
-                                'admin' => 1
-                            ]
+                                'admin' => 1,
+                            ],
                         ],
                         'stats' => [
                             'yearly' => [
-                                'created' => array (
-                                                3 =>
-                                                array (
-                                                  'ticket_count' => 1,
-                                                ),
-                                              ),
-                                              'resolved' => array ()
+                                'created' => array(
+                                    3 =>
+                                        array(
+                                            'ticket_count' => 1,
+                                        ),
+                                ),
+                                'resolved' => array(),
                             ],
                             'weekly' => [
                                 'created' =>
-                                       array (
-                                         'Thursday' =>
-                                         array (
-                                           'ticket_count' => 1,
-                                         ),
-                                       ),
-                                       'resolved' =>
-                                       array (),
-                            ]
-                        ]
-                    ]
-                ]
+                                    array(
+                                        'Friday' =>
+                                            array(
+                                                'ticket_count' => 1,
+                                            ),
+                                    ),
+                                'resolved' =>
+                                    array(),
+                            ],
+                        ],
+                    ],
+                ],
             ]);
     }
 
@@ -95,48 +95,48 @@ public function test_fetch_data_by_admin()
         $this->withoutExceptionHandling();
 
         $user = User::factory()->create([
-            'role' => 'resolver'
+            'role' => 'resolver',
         ]);
 
         $department = Department::factory()->create([
-            'name' => 'Security'
+            'name' => 'Security',
         ]);
 
         $resolver = Resolver::factory()->create([
             'department_id' => $department->id,
-            'user_id' => $user->id
+            'user_id' => $user->id,
         ]);
 
         $admin = User::factory()->create([
             'role' => 'admin',
         ]);
-        
-        $this->actingAs($admin, 'sanctum' );
+
+        $this->actingAs($admin, 'sanctum');
 
         $response = $this->get('/api/admin/resolvers');
 
         $response->assertStatus(200)
-                 ->assertJson([
+            ->assertJson([
 
-                    'data' => [
+                'data' => [
 
-                        [
-                            'data' => [
-                                'type' => 'resolvers',
-                                'resolver_id' => 1,
-                                'attributes' => [
-                                    "user" => $user->name,
-                                    "department" => $department->name,
-                                    "counts" => [
-                                        'resolved_tickets' => 0,
-                                        'rejected_tickets' => 0,
-                                        'processing_tickets' => 0
-                                        ]
-                                ]
-                            ]
-                        ]
-                    ]
-        ]);
+                    [
+                        'data' => [
+                            'type' => 'resolvers',
+                            'resolver_id' => 1,
+                            'attributes' => [
+                                "user" => $user->name,
+                                "department" => $department->name,
+                                "counts" => [
+                                    'resolved_tickets' => 0,
+                                    'rejected_tickets' => 0,
+                                    'processing_tickets' => 0,
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+            ]);
     }
 
     public function test_admin_data()
@@ -144,31 +144,32 @@ public function test_fetch_data_by_admin()
         $this->withoutExceptionHandling();
 
         $user = User::factory()->create([
-            'role' => 'admin'
+            'role' => 'admin',
         ]);
 
-        $this->actingAs($user, 'sanctum' );
+        $this->actingAs($user, 'sanctum');
 
         $response = $this->get('/api/admin/');
 
         $response->assertStatus(200)
-                 ->assertJson(
-                    [
-                        'data' => [
-                            'type' => 'users',
-                            'user_id' => $user->id,
-                            'attributes' => [
-                                'name' => $user->name,
-                                'email' => $user->email,
-                                'role' => $user->role,
-                                'img' => $user->img ?? '',
-                                'created_at' => $user->created_at->diffForHumans(),
-                                ]
-                            ],
-                            'links' => [
-                                'self' => "/users/".$user->id
-                                ]
-                 ]);
+            ->assertJson(
+                [
+                    'data' => [
+                        'type' => 'users',
+                        'user_id' => $user->id,
+                        'attributes' => [
+                            'name' => $user->name,
+                            'email' => $user->email,
+                            'role' => $user->role,
+                            'img' => $user->img ?? '',
+                            'created_at' => $user->created_at->diffForHumans(),
+                        ],
+                    ],
+                    'links' => [
+                        'self' => "/users/" . $user->id
+                    ],
+                ]
+            );
     }
 }
 

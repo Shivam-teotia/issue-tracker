@@ -116,7 +116,7 @@
       <div
         class="flex text-white justify-center space-x-2 bg-blue-500 hover:bg-blue-600 w-full mt-6 h-20"
       >
-        <div class="focus:outline-none focus:border-transparent mt-4">
+        <div class="focus:outline-none focus:border-transparent mt-2">
           <router-link :to="`/resolver-profile/${$route.params.id}`" class="w-full">
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -136,11 +136,11 @@
             </svg>
           </router-link>
         </div>
-        <div class="h-8 w-26 mt-3 text-lg dark:text-black-2 mt-6">My Profile</div>
+        <div class="h-8 w-26 mt-3 text-lg dark:text-black-2 mt-4">My Profile</div>
       </div>
       <div
         v-if="!logoutLoading"
-        class="flex text-white justify-center items-center space-x-2 bg-red w-full  pt-1 h-20"
+        class="flex text-white justify-center items-center space-x-2 bg-red w-full pt-1 h-20"
       >
         <button @click="logoutHandler" class="focus:outline-none focus:border-transparent mb-1">
           <svg
@@ -174,7 +174,9 @@
       v-if="!loadingTickets"
       class="flex flex-col pt-3 w-4/12 bg-grey-100 h-full overflow-y-scroll z-2 dark:bg-black dark:text-white"
     >
-    <p class="text-xl font-semibold mt-2" align="center">{{ ticketStatus !== '' ? capitalizeFirstLetter(ticketStatus) + ' Tickets' : '' }}  </p>
+      <p class="text-xl font-semibold mt-2" align="center">
+        {{ ticketStatus !== '' ? capitalizeFirstLetter(ticketStatus) + ' Tickets' : '' }}
+      </p>
       <ul v-for="item in cards" :key="item" class="mt-5">
         <li
           @click="() => setAttributes(item)"
@@ -229,14 +231,16 @@
             <p>{{ username }}</p>
           </footer> -->
 
-          <div v-if="ticketStatus !== 'pending' " >
-              <p class="text-black font-bold mt-8 text-xl dark:text-white">Resolver response</p>
-              <p class="text-black font-bold dark:text-white">Feedback: {{ resolverFeedback }}</p>
-              <p class="text-black font-bold dark:text-white">Name: {{ resolverName }}</p>
+          <div v-if="ticketStatus !== 'pending'">
+            <p class="text-black font-bold mt-8 text-xl dark:text-white">Resolver response</p>
+            <p class="text-black font-bold dark:text-white">Feedback: {{ resolverFeedback }}</p>
+            <p class="text-black font-bold dark:text-white">Name: {{ resolverName }}</p>
           </div>
-          
         </article>
-        <ul class="flex space-x-10 mt-10 mb-10" v-if="ticketStatus !== 'rejected' && ticketStatus !== 'resolved'">
+        <ul
+          class="flex space-x-10 mt-10 mb-10"
+          v-if="ticketStatus !== 'rejected' && ticketStatus !== 'resolved'"
+        >
           <li
             class="w-10 h-10 rounded-lg p-1 cursor-pointer transition duration-200 text-blue-400 hover:bg-blue-100"
           >
@@ -459,7 +463,7 @@ onMounted(() => {
   }
 })
 const getResolvedTickets = () => {
-  ticketStatus.value = '';
+  ticketStatus.value = ''
   loadingTickets.value = true
   apiClient
     .get(`/api/resolvers/${route.params.id}/tickets`)
@@ -488,7 +492,7 @@ const getResolvedTickets = () => {
 }
 
 const getPendingTickets = () => {
-    ticketStatus.value = '';
+  ticketStatus.value = ''
   loadingTickets.value = true
   apiClient
     .get(`/api/resolvers/${route.params.id}/tickets`)
@@ -513,18 +517,18 @@ const getPendingTickets = () => {
     })
 }
 
-const  capitalizeFirstLetter = (str) => {
-        // Check if the input string is not empty
-        if (str.length === 0) {
-            return str;
-        }
+const capitalizeFirstLetter = (str) => {
+  // Check if the input string is not empty
+  if (str.length === 0) {
+    return str
+  }
 
-        // Capitalize the first letter and concatenate the rest of the string
-        return str.charAt(0).toUpperCase() + str.slice(1);
-    }
+  // Capitalize the first letter and concatenate the rest of the string
+  return str.charAt(0).toUpperCase() + str.slice(1)
+}
 
 const getRejectedTickets = () => {
-    ticketStatus.value = '';
+  ticketStatus.value = ''
   loadingTickets.value = true
   apiClient
     .get(`/api/resolvers/${route.params.id}/tickets`)
@@ -551,7 +555,7 @@ const getRejectedTickets = () => {
     })
 }
 const getProcessingTickets = () => {
-    ticketStatus.value = '';
+  ticketStatus.value = ''
   loadingTickets.value = true
   apiClient
     .get(`/api/resolvers/${route.params.id}/tickets`)
@@ -659,8 +663,6 @@ const processing = () => {
       feedbackLoader.value = false
       console.log(error)
     })
-
-
 }
 </script>
 <style scoped>
